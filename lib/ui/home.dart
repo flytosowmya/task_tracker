@@ -34,11 +34,11 @@ class _HomePageState extends State<HomePage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              'assets/animated-bell.gif',
-              height: 200,
-              fit: BoxFit.fitWidth,
-            ),
+            // Image.asset(
+            //   'assets/animated-bell.gif',
+            //   height: 200,
+            //   fit: BoxFit.fitWidth,
+            // ),
             Text(
               'Allow Awesome Notifications to send you beautiful notifications!',
               textAlign: TextAlign.center,
@@ -126,6 +126,24 @@ class _HomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (await requestNotificationPermission()) {
+                      /// All problem scenarios on receiving notifications when app is in terminated state and only in IOS,
+                      /// its working perfectly fine in Android
+                      ///
+                      /// Scenario 1:
+                      /// When notification is scheduled 5 minutes or later from
+                      /// the current time and I terminated the app, the notification appears
+                      /// with buttons and on clicking on it the app opens but does not navigate to its respective page.
+                      ///
+                      /// Scenario 2:
+                      /// But when notification is scheduled 1 minute from the
+                      /// current time and I terminated the app, the notification appears
+                      /// with buttons and on clicking on it the app opens and navigate to its respective page.
+                      ///
+                      /// Scenario 3:
+                      /// And if I schedule after 1 day the buttons does not come up most of the time. And if I tap on
+                      /// the buttons or on the notification when the app is in terminated state it opens the app
+                      /// but does not navigate to the respective page most of the time.
+                      ///
                       showNotificationWithButtons(
                         id: 1,
                         scheduleDateTime: DateTime.now().add(
